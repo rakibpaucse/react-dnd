@@ -1,4 +1,4 @@
-import { COMPONENT, ROW, COLUMN } from "./constants";
+import { COMPONENT, ROW, COLUMN , CUSTOM_ROW } from "./constants";
 
 const initialData = {
   layout: [
@@ -55,6 +55,11 @@ const initialData = {
           ]
         }
       ]
+    },
+    {
+      type: CUSTOM_ROW,
+      id: "row2",
+      children: []
     }
   ],
   components: {

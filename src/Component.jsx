@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useDrag } from "react-dnd";
 import { COMPONENT } from "./constants";
+import ReactTooltip from 'react-tooltip';
 
 const style = {
   border: "1px dashed black",
@@ -8,7 +9,7 @@ const style = {
   backgroundColor: "white",
   cursor: "move"
 };
-const Component = ({ data, components, path }) => {
+const Component = ({ data, components, path }) => { 
   const ref = useRef(null);
 
   const [{ isDragging }, drag] = useDrag({
@@ -21,17 +22,20 @@ const Component = ({ data, components, path }) => {
   const opacity = isDragging ? 0 : 1;
   drag(ref);
 
-  const component = components[data.id];
+
+  const component = components && components[data.id];
 
   return (
     <div
+      data-tip={`Component: ${data.id}`} data-event='click focus'
       ref={ref}
       style={{ ...style, opacity }}
       className="component draggable"
     >
-      <div>{data.id}</div>
-      <div>{component.content}</div>
-    </div>
+      <ReactTooltip type="info" globalEventOff='click'/>
+      <div>{ data.id}</div>
+      <div>{component && component.content}</div>
+    </div> 
   );
 };
 export default Component;

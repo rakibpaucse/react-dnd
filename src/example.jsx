@@ -15,14 +15,14 @@ import {
 import { SIDEBAR_ITEMS, SIDEBAR_ITEM, COMPONENT, COLUMN } from "./constants";
 import shortid from "shortid";
 
-const Container = () => {
+const Container = () => { 
   const initialLayout = initialData.layout;
   const initialComponents = initialData.components;
   const [layout, setLayout] = useState(initialLayout);
   const [components, setComponents] = useState(initialComponents);
 
   const handleDropToTrashBin = useCallback(
-    (dropZone, item) => {
+    (dropZone, item) => { 
       const splitItemPath = item.path.split("-");
       setLayout(handleRemoveItemFromLayout(layout, splitItemPath));
     },
@@ -31,8 +31,7 @@ const Container = () => {
 
   const handleDrop = useCallback(
     (dropZone, item) => {
-      console.log('dropZone', dropZone)
-      console.log('item', item)
+
 
       const splitDropZonePath = dropZone.path.split("-");
       const pathToDropZone = splitDropZonePath.slice(0, -1).join("-");
@@ -45,18 +44,27 @@ const Container = () => {
       // sidebar into
       if (item.type === SIDEBAR_ITEM) {
         // 1. Move sidebar item into page
-        const newComponent = {
+
+        const isCustomRow = item.component.content === 'custom_work'  
+
+        const newComponent = item.component.type === 'row' ? {
+          id: 'custom' 
+        } : {
           id: shortid.generate(),
           ...item.component
         };
-        const newItem = {
-          id: newComponent.id,
-          type: COMPONENT
-        };
-        setComponents({
+
+        const newItem =  {
+                  id: newComponent.id,
+                  type: COMPONENT
+         };
+
+        setComponents(isCustomRow ? {...components} : {
           ...components,
           [newComponent.id]: newComponent
         });
+
+
         setLayout(
           handleMoveSidebarComponentIntoParent(
             layout,
@@ -113,12 +121,13 @@ const Container = () => {
         key={row.id}
         data={row}
         handleDrop={handleDrop}
+        
         components={components}
         path={currentPath}
       />
     );
   };
-
+localStorage.setItem("objectData" , JSON.stringify({Layout:[...layout]}))
   // dont use index for key when mapping over items
   // causes this issue - https://github.com/react-dnd/react-dnd/issues/342
   return (

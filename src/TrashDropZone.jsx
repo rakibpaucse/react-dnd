@@ -1,9 +1,9 @@
 import React from "react";
 import classNames from "classnames";
 import { useDrop } from "react-dnd";
-import { COMPONENT, ROW, COLUMN } from "./constants";
+import { COMPONENT, ROW, COLUMN , CUSTOM_ROW } from "./constants";
 
-const ACCEPTS = [ROW, COLUMN, COMPONENT];
+const ACCEPTS = [ROW, COLUMN, COMPONENT , CUSTOM_ROW];
 
 const TrashDropZone = ({ data, onDrop }) => {
   const [{ isOver, canDrop }, drop] = useDrop({
@@ -11,7 +11,7 @@ const TrashDropZone = ({ data, onDrop }) => {
     drop: (item, monitor) => {
       onDrop(data, item);
     },
-    canDrop: (item, monitor) => {
+    canDrop: (item, monitor) => { 
       const layout = data.layout;
       const itemPath = item.path;
       const splitItemPath = itemPath.split("-");
@@ -38,12 +38,22 @@ const TrashDropZone = ({ data, onDrop }) => {
 
   const isActive = isOver && canDrop;
   return (
-    <div
+   <> <div
       className={classNames("trashDropZone", { active: isActive })}
       ref={drop}
     >
       TRASH
     </div>
+
+    {/* <p>{}</p> */}
+    <div style={{padding:20}}>
+      <p style={{background:'beige', padding:'5px 10px', fontSize:20, display:'inline' }} >Full Object Data</p>
+      <div style={{border:'1px solid #ccc', padding:20}} >
+        <pre>{JSON.stringify(JSON.parse(localStorage.getItem("objectData")), null, 2) }</pre>
+      </div>
+    </div>
+
+    </>
   );
 };
 export default TrashDropZone;

@@ -72,9 +72,16 @@ body {
   padding: 10px;
 }
 
+
+
 .columns {
   display: flex;
   padding: 20px 0;
+  width: 100%;
+}
+
+.columns > div:nth-child(2n) { 
+  flex: 1 1 auto;
 }
 
 .columnContainer {

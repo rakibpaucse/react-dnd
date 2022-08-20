@@ -3,8 +3,10 @@ import { useDrag } from "react-dnd";
 import { COLUMN } from "./constants";
 import DropZone from "./DropZone";
 import Component from "./Component";
+import { Resizable } from "re-resizable";
+import ReactTooltip from 'react-tooltip';
 
-const style = {};
+const style = { };
 const Column = ({ data, components, handleDrop, path }) => {
   const ref = useRef(null);
 
@@ -24,6 +26,7 @@ const Column = ({ data, components, handleDrop, path }) => {
   drag(ref);
 
   const renderComponent = (component, currentPath) => {
+
     return (
       <Component
         key={component.id}
@@ -35,17 +38,20 @@ const Column = ({ data, components, handleDrop, path }) => {
   };
 
   return (
+    <Resizable style={{width:'100%'}} >
     <div
-      ref={ref}
-      style={{ ...style, opacity }}
-      className="base draggable column"
+    data-tip={`Column: ${data.id}`} data-event='click focus'
+    ref={ref}
+    style={{ ...style, opacity }}
+    className="base draggable column"
     >
+     
       {data.id}
       {data.children.map((component, index) => {
         const currentPath = `${path}-${index}`;
 
         return (
-          <React.Fragment key={component.id}>
+          <React.Fragment key={component.id}> 
             <DropZone
               data={{
                 path: currentPath,
@@ -65,7 +71,11 @@ const Column = ({ data, components, handleDrop, path }) => {
         onDrop={handleDrop}
         isLast
       />
-    </div>
+
+      </div> 
+    </Resizable>
+    
   );
 };
 export default Column;
+
